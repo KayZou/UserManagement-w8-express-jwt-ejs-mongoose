@@ -10,3 +10,4 @@ log in as administrators, and manage user records. Administrators can create, up
 - JWT (JSON Web Tokens): Used for user authentication and authorization.
 - EJS (Embedded JavaScript): A templating engine for rendering HTML templates.
 - Multer: Middleware for handling file uploads (for user profile images).
+- Nodemailer: Used for sending emails to users.
