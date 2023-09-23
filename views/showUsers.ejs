@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <!-- Include Bootstrap CSS (adjust the path as needed) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Include Font Awesome CSS (adjust the path as needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<main class="container mt-4">
+    <!-- Display user list or "No users" message -->
+    <h2>User List</h2>
+    <% if (users.length > 0) { %>
+        <ul class="list-group">
+            <% users.forEach((user) => { %>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <!-- User Image -->
+                            <img src="/uploads/<%= user.profileImage %>" alt="User Image" class="img-fluid rounded-circle" width="100">
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="mb-0">Username: <%= user.username %></h4>
+                            <p class="mb-0">Email: <%= user.email %></p>
+                            <p class="mb-0">Phone: <%= user.phone %></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-0">Age: <%= user.age %> years</p>
+                            <p class="mb-0">Salary: $<%= user.salary %></p>
+                        </div>
+                        <div class="col-md-3">
+                            <!-- Edit Icon Form with Modal Trigger -->
+                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editModal<%= user._id %>">
+                                <i class="fas fa-edit"></i>
+                            </button>
+
+                            <!-- Delete Icon Form with Modal Trigger -->
+                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#deleteModal<%= user._id %>">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Edit User Modal -->
+                <div class="modal fade" id="editModal<%= user._id %>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Edit User Form -->
+                                <form action="/admins/edit/<%= user._id %>" method="POST" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" value="<%= user.phone %>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="age">Age</label>
+                                        <input type="number" class="form-control" id="age" name="age" value="<%= user.age %>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="salary">Salary</label>
+                                        <input type="number" class="form-control" id="salary" name="salary" value="<%= user.salary %>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profileImage">Profile Image</label>
+                                        <input type="file" class="form-control-file" id="profileImage" name="profileImage">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Delete User Modal -->
+                <div class="modal fade" id="deleteModal<%= user._id %>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this user?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form action="/admins/delete/<%= user._id %>" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <div class="alert alert-info" role="alert">
+            No users are created yet.
+        </div>
+    <% } %>
+
+    <% if (users.length > 0) { %>
+        <!-- Buttons for sorting by age and salary -->
+        <div class="mb-3">
+            <a href="/admins/get?sortBy=age" class="btn btn-primary">Sort by Age</a>
+            <a href="/admins/get?sortBy=salary" class="btn btn-primary">Sort by Salary</a>
+        </div>
+        <ul class="list-group">
+            <% users.forEach((user) => { %>
+                <!-- User list items -->
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <div class="alert alert-info" role="alert">
+            No users are created yet.
+        </div>
+    <% } %>
+    <form action="/admins/search" method="GET" class="mb-4">
+        <button type="submit" class="btn btn-primary">
+            Search by Username
+        </button>
+    </form>
+</main>
+<!-- Include Bootstrap JS and Popper.js (adjust the paths as needed) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjV
+p/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"/>
+    </body>
+    </html>

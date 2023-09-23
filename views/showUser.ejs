@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <!-- Include Bootstrap CSS (adjust the path as needed) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<main class="container mt-4">
+    <h2>User Details</h2>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- Display the user's image -->
+                    <img src="/uploads/<%= user.profileImage %>" alt="User Image" class="img-fluid rounded-circle">
+                </div>
+                <div class="col-md-8">
+                    <h5 class="card-title">Username: <%= user.username %></h5>
+                    <p class="card-text">Email: <%= user.email %></p>
+                    <p class="card-text">Phone: <%= user.phone %></p>
+                    <p class="card-text">Age: <%= user.age %> years</p>
+                    <p class="card-text">Salary: $<%= user.salary %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form action="/admins/get" method="GET">
+        <button type="submit" class="btn btn-primary">Show All Created Users</button>
+    </form>
+</main>
+</body>
+</html>
